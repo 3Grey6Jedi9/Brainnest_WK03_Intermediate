@@ -1,27 +1,71 @@
 import pdb
-my_set = {13,40,20,10,5,16,8,4,2,1}
 
 
-def func(n):
-    if n % 2 == 0:
-        return n/2
+
+number_day = ''
+
+#Checking that the day is Sunday
+def is_sunday(number_day):
+    if number_day % 7 == 0:
+        return True
     else:
-        return 3*n + 1
+        return False
 
-naturals = tuple(range(14,int(1e6+1)))
+month = [31,28,31,30,31,30,31,31,30,31,30,31]
+month_leap = [29 if x == 28 else x for x in month]
+
+y = tuple(range(1901,2001))
+years = []
+
+for x in y:
+    if x % 4 == 0:
+        years.append(366)
+    else:
+        years.append(365)
+
+#add leapmonths
+def is_first(number_day, leap):
+    if leap == False:
+        i = 0
+        while number_day > 28:
+            number_day = number_day - month[i]
+            i += 1
+        if number_day == 1:
+            return True
+        else:
+            return False
+    elif leap == True:
+        i = 0
+        while number_day > 29:
+            number_day = number_day - month_leap[i]
+            i += 1
+        if number_day == 1:
+            return True
+        else:
+            return False
 
 
-pdb.set_trace()
+#pdb.set_trace()
 
-for s in naturals:
-    new_set = set()
-    new_set.add(s)
-    n = s
-    while n != 1:
-        n = func(n)
-        new_set.add(n)
-    if len(new_set) > len(my_set):
-        my_set = new_set
+# 1904
+counter = 0
+
+for y in years:
+    k = 1
+    if k % 4 == 0:
+        leap = True
+    else:
+        leap = False
+    x = tuple(range(1,y+1))
+    for n in x:
+        if is_first(n,leap):
+            if is_sunday(n):
+                counter +=1
+            else:
+                pass
+        else:
+            continue
+    k += 1
 
 
-print(list(my_set)[0])
+print(counter)
